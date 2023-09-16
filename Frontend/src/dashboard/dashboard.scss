@@ -1,0 +1,65 @@
+.hello{
+    display: flex;
+}
+
+.Modal{
+    display: flex;
+    flex-direction: column;
+
+    .Field{
+        margin-bottom: 15px;
+    }
+
+    .Buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 15px;
+    }
+}
+
+.Addbutton{
+    font-weight: 500;
+    color: #3e3636;
+    border: 1px solid cadetblue;
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.heading{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 25px;
+
+    .Logout{
+        font-weight: 500;
+        color: #3e3636;
+        border: 1px solid #bd2130;
+        padding: 8px;
+        border-radius: 8px;
+        cursor: pointer;
+        margin-left: 15px;
+    }
+}
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 50%;
+    margin-left: 25%;
+  }
+  
+  td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #dddddd;
+  }
+
+  strong{
+    font-size: 20px;
+  }
