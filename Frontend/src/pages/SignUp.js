@@ -18,21 +18,27 @@ const SignUp=()=> {
 		},
 		
     onSubmit: async(values) => {
-	  	try {
-			await AuthService.signUpByUser(values).then(res => {
-				if (res.code === 200) {
-					toast.success(`${res.message}`, {
-						duration: 2000
-					});
-					navigate('/login');
-				} else {
-					toast.error(`${res.message}`, {
-						duration: 2000
-					});
-				}
-			});
-		} catch (err) {
-			toast.error('Sever Connection Failed', {
+		if(values.password !== '' && (values.email !== '' || values.userName !== '')){
+			try {
+				await AuthService.signUpByUser(values).then(res => {
+					if (res.code === 200) {
+						toast.success(`${res.message}`, {
+							duration: 2000
+						});
+						navigate('/login');
+					} else {
+						toast.error(`${res.message}`, {
+							duration: 2000
+						});
+					}
+				});
+			} catch (err) {
+				toast.error('Sever Connection Failed', {
+					duration: 2000
+				});
+			}
+		} else {
+			toast.error('Fields are Required', {
 				duration: 2000
 			});
 		}

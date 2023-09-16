@@ -11,7 +11,6 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 
-
 const SignIn=()=> {
 	const navigate = useNavigate()
 	const formik = useFormik({
@@ -20,35 +19,44 @@ const SignIn=()=> {
 		password: '',
 		},
     onSubmit: async(values) => {
-	  	try {
-			var isEmailType = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values?.user);
-			var payload = { password: values?.password };
-			if (isEmailType) {
-				payload.email = values?.user;
-			} else {
-				payload.userName = values?.user;
-			}
-
-			await AuthService.loginByUser(payload).then(res => {
-				if (res.code === 200) {
-					const token = res.data.token;
-					if (!!token) {
-						AppDispatcher.updateLoginStatus(true);
-						const decoded = jwt_decode(token)
-						console.log(decoded)
-						setCookie('token', token);
-						setCookie('uuid', decoded.uuid);
-						setCookie('path', '/dashboard');
-						navigate('/dashboard');
-					}
+		if(values.user !== '' && values.password !== ''){
+			try {
+				var isEmailType = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values?.user);
+				var payload = { password: values?.password };
+				if (isEmailType) {
+					payload.email = values?.user;
 				} else {
-					toast.error(`${res.message}`, {
-						duration: 2000
-					});
+					payload.userName = values?.user;
 				}
-			});
-		} catch (err) {
-			toast.error('Sever Connection Failed', {
+	
+				await AuthService.loginByUser(payload).then(res => {
+					if (res.code === 200) {
+						const token = res.data.token;
+						if (!!token) {
+							AppDispatcher.updateLoginStatus(true);
+							const decoded = jwt_decode(token)
+							console.log(decoded)
+							setCookie('token', token);
+							setCookie('uuid', decoded.uuid);
+							setCookie('path', '/dashboard');
+							navigate('/dashboard');
+							toast.success(`${res.message}`, {
+								duration: 2000
+							});
+						}
+					} else {
+						toast.error(`${res.message}`, {
+							duration: 2000
+						});
+					}
+				});
+			} catch (err) {
+				toast.error('Sever Connection Failed', {
+					duration: 2000
+				});
+			}
+		} else {
+			toast.error('Fields are Required', {
 				duration: 2000
 			});
 		}

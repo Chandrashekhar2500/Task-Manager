@@ -79,26 +79,33 @@ const TaskManager = () => {
     }
 
     const addTask = async()=>{
-        try {
-			await AuthService.addTask(newTask).then(res => {
-				if (res.code === 200) {
-                    taskData.push(newTask)
-                    setTaskData(taskData)
-                    handleClose();
-                    toast.success(`${res.message}`, {
-						duration: 2000
-					});
-				} else {
-					toast.error(`${res.message}`, {
-						duration: 2000
-					});
-				}
-			});
-		} catch (err) {
-			toast.error('Sever Connection Failed', {
-				duration: 2000
-			});
-		}
+        if(newTask.name !== '' && newTask.description !== '' && newTask.status !== ''){
+            try {
+                await AuthService.addTask(newTask).then(res => {
+                    if (res.code === 200) {
+                        taskData.push(newTask)
+                        setTaskData(taskData)
+                        handleClose();
+                        toast.success(`${res.message}`, {
+                            duration: 2000
+                        });
+                    } else {
+                        toast.error(`${res.message}`, {
+                            duration: 2000
+                        });
+                    }
+                });
+            } catch (err) {
+                toast.error('Sever Connection Failed', {
+                    duration: 2000
+                });
+            }
+        } else {
+            toast.error(`Fields are Required`, {
+                duration: 2000
+            });
+        }
+
     }
 
     const deleteTask = async(index)=>{
@@ -126,33 +133,40 @@ const TaskManager = () => {
     }
 
     const updateTask = async()=>{
-        try {
-			await AuthService.updateTask(editTask).then(res => {
-				if (res.code === 200) {
-                    [editTask].forEach(element => {
-                        const itemIndex = taskData.findIndex(o => o.id === element.id);
-                        if(itemIndex > -1) {
-                            taskData[itemIndex] = element;
-                        } else {
-                            taskData = taskData.push(element);
-                        }       
-                    });
-                    setTaskData(taskData)
-                    setEdit(false)
-                    toast.success(`${res.message}`, {
-						duration: 2000
-					});
-				} else {
-					toast.error(`${res.message}`, {
-						duration: 2000
-					});
-				}
-			});
-		} catch (err) {
-			toast.error('Sever Connection Failed', {
-				duration: 2000
-			});
-		}
+        if(editTask.name !== '' && editTask.description !== '' && editTask.status !== ''){
+            try {
+                await AuthService.updateTask(editTask).then(res => {
+                    if (res.code === 200) {
+                        [editTask].forEach(element => {
+                            const itemIndex = taskData.findIndex(o => o.id === element.id);
+                            if(itemIndex > -1) {
+                                taskData[itemIndex] = element;
+                            } else {
+                                taskData = taskData.push(element);
+                            }       
+                        });
+                        setTaskData(taskData)
+                        setEdit(false)
+                        toast.success(`${res.message}`, {
+                            duration: 2000
+                        });
+                    } else {
+                        toast.error(`${res.message}`, {
+                            duration: 2000
+                        });
+                    }
+                });
+            } catch (err) {
+                toast.error('Sever Connection Failed', {
+                    duration: 2000
+                });
+            }
+        } else {
+            toast.error('Fields are Required', {
+                duration: 2000
+            });
+        }
+
     }
 
     const openEdit=(item)=>{
