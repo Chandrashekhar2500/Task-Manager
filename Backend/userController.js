@@ -62,8 +62,8 @@ router.post('/login', async(req, res) => {
 });
 
 
-router.get('/getTasks', (req, res) => {
-    const sqlQuery = 'SELECT * FROM tasks';
+router.post('/getTasks', (req, res) => {
+    const sqlQuery = `SELECT * FROM tasks WHERE uuid ='${req.body.uuid}'`;
     db.query(sqlQuery, (queryErr, results) => {
       if (queryErr) {
         console.error('Error executing query:', queryErr);
@@ -75,13 +75,14 @@ router.get('/getTasks', (req, res) => {
 });
 
 router.post('/addTask', (req, res) => {
-  const {name, description, status} = req.body
+  const {uuid, name, description, status} = req.body
 
   const body = {
     id : uuidv4(),
     name : name,
     description: description,
     status: status,
+    uuid: uuid
   }
 
   const sqlQuery = 'INSERT INTO tasks SET ?';
@@ -97,7 +98,7 @@ router.post('/addTask', (req, res) => {
 
 router.post('/deleteTask', (req, res) => {
   
-  const sqlQuery = `DELETE FROM tasks WHERE id='${req.body.id}'`;
+  const sqlQuery = `DELETE FROM tasks WHERE id='${req.body.id}' AND uuid='${req.body.uuid}'`;
   db.query(sqlQuery, (queryErr, results) => {
     if (queryErr) {
       console.error('Error executing query:', queryErr);
@@ -110,8 +111,8 @@ router.post('/deleteTask', (req, res) => {
 
 router.post('/updateTask', (req, res) => {
 
-  const {id, name, description, status} = req.body
-  const sqlQuery = `UPDATE tasks SET name = '${name}', description = '${description}', status = '${status}' WHERE id = '${id}'`;
+  const {uuid, id, name, description, status} = req.body
+  const sqlQuery = `UPDATE tasks SET name= '${name}', description= '${description}', status= '${status}' WHERE id= '${id}' AND uuid= '${uuid}'`;
   db.query(sqlQuery, (queryErr, results) => {
     if (queryErr) {
       console.error('Error executing query:', queryErr);

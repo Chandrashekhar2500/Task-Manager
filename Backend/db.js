@@ -36,6 +36,7 @@ const connection = mysql.createConnection({
           name VARCHAR(255),
           description VARCHAR(255),
           status VARCHAR(255),
+          uuid VARCHAR(255),
           PRIMARY KEY (id))`, (queryErr, results) => {
             if (queryErr) {
               console.error('Error executing query:', queryErr);

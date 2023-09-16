@@ -12,7 +12,7 @@ import TextField from '@mui/material/TextField';
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
-import { clearCookie } from '../components/Cookie';
+import { clearCookie, getCookie } from '../components/Cookie';
 import { AuthService } from '../network/authService';
 import './dashboard.scss';
 
@@ -31,8 +31,8 @@ const style = {
 const TaskManager = () => {
     const navigate = useNavigate()
     const [taskData, setTaskData] = useState([])
-    const [newTask, setNewTask] = useState({name:'', description:'', status:''})
-    const [editTask, setEditTask] = useState({id:'', name:'', description:'', status:''})
+    const [newTask, setNewTask] = useState({uuid: getCookie('uuid'), name:'', description:'', status:''})
+    const [editTask, setEditTask] = useState({uuid: getCookie('uuid'), id:'', name:'', description:'', status:''})
 
     const handleChange = e => {
         const { name, value } = e.target;
@@ -60,9 +60,9 @@ const TaskManager = () => {
         navigate('/')
     }
 
-    const getTaskList = async()=>{
+    const TaskList = async()=>{
         try {
-			await AuthService.getTaskList({}, {}).then(res => {
+			await AuthService.taskList({uuid: getCookie('uuid')}).then(res => {
 				if (res.code === 200) {
                     setTaskData(res.data)
 				} else {
@@ -103,7 +103,7 @@ const TaskManager = () => {
 
     const deleteTask = async(index)=>{
         try {
-			await AuthService.deleteTask({id:index}).then(res => {
+			await AuthService.deleteTask({id:index, uuid:getCookie('uuid')}).then(res => {
 				if (res.code === 200) {
                     const newArrayObj = taskData.filter(object => {
                         return object.id !== index;
@@ -165,7 +165,7 @@ const TaskManager = () => {
     }
 
     useEffect(() => {
-        getTaskList();
+        TaskList();
     }, [])
 
     return (

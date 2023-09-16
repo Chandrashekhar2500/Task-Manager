@@ -34,9 +34,10 @@ const SignIn=()=> {
 					const token = res.data.token;
 					if (!!token) {
 						AppDispatcher.updateLoginStatus(true);
-						const decoded = jwt_decode(token, { header: true })
+						const decoded = jwt_decode(token)
+						console.log(decoded)
 						setCookie('token', token);
-						setCookie('uuid', decoded.id);
+						setCookie('uuid', decoded.uuid);
 						setCookie('path', '/dashboard');
 						navigate('/dashboard');
 					}

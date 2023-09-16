@@ -13,8 +13,8 @@ export class AuthService {
 		return await instance.httpRequest(false);
 	}
 
-	static async getTaskList({}, params) {
-		const instance = new NetworkManager(API.DASHBOARD.GETTASK, {}, params);
+	static async taskList(payload) {
+		const instance = new NetworkManager(API.DASHBOARD.GETTASK, payload);
 		return await instance.httpRequest(false);
 	}
 

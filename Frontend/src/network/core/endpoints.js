@@ -10,7 +10,7 @@ export const API = {
 		SIGNUP: new Endpoint('/register', HTTP_METHODS.POST),
 	},
 	DASHBOARD : {
-		GETTASK: new Endpoint('/getTasks', HTTP_METHODS.GET),
+		GETTASK: new Endpoint('/getTasks', HTTP_METHODS.POST),
 		ADDTASK: new Endpoint('/addTask', HTTP_METHODS.POST),
 		DELETETASK: new Endpoint('/deleteTask', HTTP_METHODS.POST),
 		UPDATETASK: new Endpoint('/updateTask', HTTP_METHODS.POST),
